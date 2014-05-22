@@ -11,10 +11,10 @@ def run(environ, start_response):
 	except:
 		pres = ""
         
-   try:
-      dl = request.args.get("dl")
-   except:
-      dl = "nothing"
+	try:
+		dl = request.args.get("dl")
+	except:
+		dl = "nothing"
        
 
 	html = "Almost nothing here."
