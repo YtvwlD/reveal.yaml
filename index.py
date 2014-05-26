@@ -17,14 +17,14 @@ def run(environ, start_response):
 	except:
 		get = "html"
 
-	if get == "html":
-		html = getHtml(pres, True)
-		response = Response(html, mimetype="text/html")
-	elif get == "nojs":
+	if get == "nojs":
 		html = getHtml(pres, False)
 		response = Response(html, mimetype="text/html")
 	elif get == "zip":
 		response = Response("", mimetype="application/zip")
+	else: #assume get == "html"
+		html = getHtml(pres, True)
+		response = Response(html, mimetype="text/html")
 	return (response(environ, start_response))
 
 if __name__ == "__main__":
