@@ -23,7 +23,7 @@ def getHtml(pres, js):
 def parse_slide(slide, tabs):
 	slide_html = ""
 	tabs_to_insert = ""
-	for tab in tabs:
+	for i in xrange(tabs):
 		tabs_to_insert += "\t"
 	try:
 		slide_html += tabs_to_insert + parse_md(slide["md"]) + "\n"
