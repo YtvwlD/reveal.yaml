@@ -18,12 +18,18 @@ def run(environ, start_response):
 		get = "html"
 
 	if get == "nojs":
-		html = getHtml(pres, False)
+		try:
+			html = getHtml(pres, False)
+		except:
+			html = getHtml("error", False)
 		response = Response(html, mimetype="text/html")
 	elif get == "zip":
 		response = Response("", mimetype="application/zip")
 	else: #assume get == "html"
-		html = getHtml(pres, True)
+		try:
+			html = getHtml(pres, True)
+		except:
+			html = getHtml("error", True)
 		response = Response(html, mimetype="text/html")
 	return (response(environ, start_response))
 
