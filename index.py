@@ -1,7 +1,8 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python
 
 from wsgiref.handlers import CGIHandler
 from werkzeug.wrappers import Request, Response
+from html import getHtml
 
 def run(environ, start_response):
 	request = Request(environ)
@@ -12,16 +13,19 @@ def run(environ, start_response):
 		pres = ""
 	
 	try:
-		dl = request.args.get("dl")
+		get = request.args.get("get")
 	except:
-		dl = "nothing"
-	
-	html = "Almost nothing here."
-	
-	if dl == "nothing":
+		get = "html"
+
+	if get == "html":
+		html = getHtml(pres, True)
 		response = Response(html, mimetype="text/html")
+	elif get == "nojs":
+		html = getHtml(pres, False)
+		response = Response(html, mimetype="text/html")
+	elif get == "zip":
+		response = Response("", mimetype="application/zip")
 	return (response(environ, start_response))
 
 if __name__ == "__main__":
 	CGIHandler().run(run)
-	
