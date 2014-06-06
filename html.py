@@ -1,11 +1,15 @@
 from os import path
 from yaml import load
+from markdown import Markdown
+
 def getHtml(pres, js):
 	folder = path.join("data", pres)
 	pres_file = open(path.join(folder, "index.yaml"), "r")
 	pres_yaml = pres_file.read()
 	pres_file.close()
 	pres_yaml = load(pres_yaml)
+
+	markdown = Markdown(extensions=["extra", "codehilite", "wikilinks"])
 
 	#much to do; now only parsing the slides and outputting pure html
 
@@ -14,13 +18,13 @@ def getHtml(pres, js):
 	#TODO: HEAD
 	html += "\t<body>\n"
 	#TODO: divs and ids
-	html += parse_slide(pres_yaml, 2)
+	html += parse_slide(pres_yaml, 2, markdown)
 	#TODO: divs and ids
 	html += "\t</body>\n"
 	html += "</html>\n"
 	return(html)
 
-def parse_slide(slide, tabs):
+def parse_slide(slide, tabs, markdown):
 	slide_html = ""
 	tabs_to_insert = ""
 	for i in xrange(tabs):
@@ -34,9 +38,7 @@ def parse_slide(slide, tabs):
 			for x in slide["slides"]:
 				slide_html += parse_slide(x, tabs + 1)
 
-
 	return (slide_html)
 
-def parse_md(md):
-	#TODO
-	return(md)
+def parse_md(md_file, markdown):
+	return (markdown.reset().convertFile(path.join(folder, md)))
