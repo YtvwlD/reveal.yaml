@@ -33,7 +33,7 @@ def parse_slide(slide, tabs, markdown):
 			slide_html += tabs_to_insert + slide["text"] + "\n"
 		except KeyError:
 			for x in slide["slides"]:
-				slide_html += parse_slide(x, tabs + 1)
+				slide_html += parse_slide(x, tabs + 1, markdown)
 
 	return (slide_html)
 
