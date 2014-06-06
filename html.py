@@ -25,9 +25,7 @@ def getHtml(pres, js):
 
 def parse_slide(slide, tabs, markdown):
 	slide_html = ""
-	tabs_to_insert = ""
-	for i in xrange(tabs):
-		tabs_to_insert += "\t"
+	tabs_to_insert = "\t" * tabs
 	try:
 		slide_html += tabs_to_insert + parse_md(slide["md"]) + "\n"
 	except KeyError:
