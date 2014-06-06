@@ -4,9 +4,8 @@ from markdown import Markdown
 
 def getHtml(pres, js):
 	folder = path.join("data", pres)
-	pres_file = open(path.join(folder, "index.yaml"), "r")
-	pres_yaml = pres_file.read()
-	pres_file.close()
+	with open(path.join(folder, "index.yaml")) as pres_file:
+		pres_yaml = pres_file.read()
 	pres_yaml = load(pres_yaml)
 
 	markdown = Markdown(extensions=["extra", "codehilite", "wikilinks"])
