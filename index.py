@@ -53,8 +53,9 @@ def run(environ, start_response):
 		except:
 			try:
 				client.captureException()
-			finally:
-				html = getHtml("error", True)
+			except:
+				pass
+			html = getHtml("error", True)
 		response = Response(html, mimetype="text/html")
 	return (response(environ, start_response))
 
