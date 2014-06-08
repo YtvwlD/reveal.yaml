@@ -33,25 +33,25 @@ def getHtml(pres, js):
 	#TODO: HEAD
 	html += "\t<body>\n"
 	#TODO: divs and ids
-	html += parse_slide(pres_yaml, 2, markdown)
+	html += parse_slide(pres_yaml, 2, markdown, folder)
 	#TODO: divs and ids
 	html += "\t</body>\n"
 	html += "</html>\n"
 	return(html)
 
-def parse_slide(slide, tabs, markdown):
+def parse_slide(slide, tabs, markdown, folder):
 	slide_html = ""
 	tabs_to_insert = "\t" * tabs
 	try:
-		slide_html += tabs_to_insert + parse_md(slide["md"], markdown) + "\n"
+		slide_html += tabs_to_insert + parse_md(slide["md"], markdown, folder) + "\n"
 	except KeyError:
 		try:
 			slide_html += tabs_to_insert + slide["text"] + "\n"
 		except KeyError:
 			for x in slide["slides"]:
-				slide_html += parse_slide(x, tabs + 1, markdown)
+				slide_html += parse_slide(x, tabs + 1, markdown, folder)
 
 	return (slide_html)
 
-def parse_md(md_file, markdown):
+def parse_md(md_file, markdown, folder):
 	return (markdown.reset().convertFile(path.join(folder, md)))
