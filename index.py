@@ -20,6 +20,12 @@ from wsgiref.handlers import CGIHandler
 from werkzeug.wrappers import Request, Response
 from html import getHtml
 
+try:
+    from sentry import Client
+    client = Client()
+except:
+    client = None
+
 def run(environ, start_response):
 	request = Request(environ)
 
@@ -45,7 +51,10 @@ def run(environ, start_response):
 		try:
 			html = getHtml(pres, True)
 		except:
-			html = getHtml("error", True)
+			try:
+				client.captureException()
+			finally:
+				html = getHtml("error", True)
 		response = Response(html, mimetype="text/html")
 	return (response(environ, start_response))
 
