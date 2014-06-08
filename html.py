@@ -17,6 +17,7 @@
 from os import path
 from yaml import load
 from markdown import Markdown
+import codecs
 
 def getHtml(pres, js):
 	folder = path.join("data", pres)
@@ -55,6 +56,6 @@ def parse_slide(slide, tabs, markdown, folder):
 
 def parse_md(md_file, markdown, folder):
 	markdown.reset()
-	with open(path.join(folder, md_file)) as md:
+	with codecs.open(path.join(folder, md_file), encoding="UTF-8") as md:
 		md_result = markdown.convert(md.read())
 	return (md_result)
