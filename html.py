@@ -54,4 +54,4 @@ def parse_slide(slide, tabs, markdown, folder):
 	return (slide_html)
 
 def parse_md(md_file, markdown, folder):
-	return (markdown.reset().convertFile(path.join(folder, md)))
+	return (markdown.reset().convertFile(path.join(folder, md_file)))
