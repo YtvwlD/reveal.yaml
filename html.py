@@ -34,8 +34,12 @@ def getHtml(pres, js):
 	#TODO: HEAD
 	html += "\t<body>\n"
 	#TODO: divs and ids
-	html += parse_slide(pres_yaml, 2, markdown, folder)
+	html += "\t\t<div class=\"reveal\">\n"
+	html += "\t\t\t<div class=\"slides\">\n"
+	html += parse_slide(pres_yaml, 4, markdown, folder)
 	#TODO: divs and ids
+	html += "\t\t\t</div>\n"
+	html += "\t\t</div>\n"
 	html += "\t</body>\n"
 	html += "</html>\n"
 	return(html)
