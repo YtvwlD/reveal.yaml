@@ -55,7 +55,7 @@ def run(environ, start_response):
 			add_to_err = "This incident hasn't been logged, because logging isn't configured."
 		except:
 			add_to_err = "This incident hasn't been logged, because a error occured while logging the previous error."
-		html = error(add_to_err, (get!="nojs"))
+		html = getHtml("error", (get!="nojs"), append={"text": add_to_err})
 		response = Response(html, mimetype="text/html")
 	return (response(environ, start_response))
 
