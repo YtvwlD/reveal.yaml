@@ -21,10 +21,10 @@ from werkzeug.wrappers import Request, Response
 from html import getHtml
 
 try:
-    from sentry import Client
-    client = Client()
+	from sentry import Client
+	client = Client()
 except:
-    client = None
+	client = None
 
 def run(environ, start_response):
 	request = Request(environ)
