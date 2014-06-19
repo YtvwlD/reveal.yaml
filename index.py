@@ -40,13 +40,11 @@ def run(environ, start_response):
 		get = "html"
 
 	try:
-		if get == "nojs":
-			html = getHtml(pres, False)
-			response = Response(html, mimetype="text/html")
-		elif get == "zip":
+		if get == "zip":
 			response = Response("", mimetype="application/zip")
 		else: # assume get == "html"
-			html = getHtml(pres, True)
+			html = getHtml(pres, (get!="nojs"))
+			response = Response(html, mimetype="text/html")
 	except:
 		try:
 			client.captureException()
