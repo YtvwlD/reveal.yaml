@@ -27,13 +27,13 @@ def getHtml(pres, js, prepend=False, append=False):
 
 	markdown = Markdown(extensions=["extra", "codehilite", "wikilinks"])
 
-	#much to do; now only parsing the slides and outputting pure html
+	# much to do; now only parsing the slides and outputting pure html
 
 	html = ""
 	html += "<!doctype html>\n<html>\n"
-	#TODO: HEAD
+	# TODO: HEAD
 	html += "\t<body>\n"
-	#TODO: divs and ids
+	# TODO: divs and ids
 	html += "\t\t<div class=\"reveal\">\n"
 	html += "\t\t\t<div class=\"slides\">\n"
 	if prepend:
@@ -41,7 +41,7 @@ def getHtml(pres, js, prepend=False, append=False):
 	html += parse_slide(pres_yaml, 4, markdown, folder)
 	if append:
 		html += parse_slide(append, 4, markdown, folder)
-	#TODO: divs and ids
+	# TODO: divs and ids
 	html += "\t\t\t</div>\n"
 	html += "\t\t</div>\n"
 	html += "\t</body>\n"
