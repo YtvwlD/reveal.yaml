@@ -29,14 +29,12 @@ except ImportError:
 def run(environ, start_response):
 	request = Request(environ)
 
-	try:
-		pres = request.args.get("p")
-	except:
-		pres = ""
+	pres = request.args.get("p")
+	if pres is None:
+		pres = "welcome"
 	
-	try:
-		get = request.args.get("get")
-	except:
+	get = request.args.get("get")
+	if get is None:
 		get = "html"
 
 	try:
