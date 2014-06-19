@@ -23,7 +23,7 @@ from html import getHtml
 try:
 	from sentry import Client
 	client = Client()
-except:
+except ImportError:
 	client = None
 
 def run(environ, start_response):
@@ -39,23 +39,23 @@ def run(environ, start_response):
 	except:
 		get = "html"
 
-	if get == "nojs":
-		try:
+	try:
+		if get == "nojs":
 			html = getHtml(pres, False)
-		except:
-			html = getHtml("error", False)
-		response = Response(html, mimetype="text/html")
-	elif get == "zip":
-		response = Response("", mimetype="application/zip")
-	else: #assume get == "html"
-		try:
+			response = Response(html, mimetype="text/html")
+		elif get == "zip":
+			response = Response("", mimetype="application/zip")
+		else: #assume get == "html"
 			html = getHtml(pres, True)
+	except:
+		try:
+			client.captureException()
+			add_to_err = "This incident has been logged."
+		except AttributeError:
+			add_to_err = "This incident hasn't been logged, because logging isn't configured."
 		except:
-			try:
-				client.captureException()
-			except:
-				pass
-			html = getHtml("error", True)
+			add_to_err = "This incident hasn't been logged, because a error occured while logging the previous error."
+		html = error(add_to_err, (get!="nojs"))
 		response = Response(html, mimetype="text/html")
 	return (response(environ, start_response))
 
