@@ -69,6 +69,14 @@ def parse_md(md_file, tabs, markdown, folder):
 	with codecs.open(path.join(folder, md_file), encoding="UTF-8") as md:
 		md_result = markdown.convert(md.read())
 	md_result_with_tabs = ""
+	code = False
 	for line in md_result.splitlines():
-		md_result_with_tabs += "\t" * tabs + line + "\n"
+		if line.startswith("<div class=\"codehilite\"><pre>"):
+			code = True
+		if code:
+			md_result_with_tabs += line + "\n"
+		else:
+			md_result_with_tabs += "\t" * tabs + line + "\n"
+		if line.endswith("</pre></div>"):
+			code = False
 	return (md_result_with_tabs)
