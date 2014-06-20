@@ -50,23 +50,25 @@ def getHtml(pres, js, prepend=False, append=False):
 
 def parse_slide(slide, tabs, markdown, folder):
 	slide_html = ""
-	tabs_to_insert = "\t" * tabs
-	slide_html += tabs_to_insert + "<section>\n"
-	tabs_to_insert += 1
+	slide_html += "\t" * tabs + "<section>\n"
+	tabs += 1
 	try:
-		slide_html += tabs_to_insert + parse_md(slide["md"], markdown, folder) + "\n"
+		slide_html += "\t" * tabs + parse_md(slide["md"], tabs, markdown, folder) + "\n"
 	except KeyError:
 		try:
-			slide_html += tabs_to_insert + slide["text"] + "\n"
+			slide_html += "\t" * tabs + slide["text"] + "\n"
 		except KeyError:
 			for x in slide["slides"]:
-				slide_html += parse_slide(x, tabs + 1, markdown, folder)
-	tabs_to_insert -= 1
-	slide_html += tabs_to_insert + "</section>\n"
+				slide_html += parse_slide(x, tabs, markdown, folder)
+	tabs -= 1
+	slide_html += "\t" * tabs + "</section>\n"
 	return (slide_html)
 
-def parse_md(md_file, markdown, folder):
+def parse_md(md_file, tabs, markdown, folder):
 	markdown.reset()
 	with codecs.open(path.join(folder, md_file), encoding="UTF-8") as md:
 		md_result = markdown.convert(md.read())
-	return (md_result)
+	md_result_with_tabs = ""
+	for line in md_result.splitlines():
+		md_result_with_tabs += "\t" * tabs + line + "\n"
+	return (md_result_with_tabs)
