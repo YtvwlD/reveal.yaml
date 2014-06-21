@@ -71,10 +71,10 @@ def getHtml(pres, js, prepend=False, append=False):
 			<div class="slides">
 """
 	if prepend:
-		html += parse_slide(prepend, 4, markdown, folder)
-	html += parse_slide(pres_yaml, 4, markdown, folder)
+		html += parse_slide(prepend, 4, markdown, folder, first=True)
+	html += parse_slide(pres_yaml, 4, markdown, folder, first=True)
 	if append:
-		html += parse_slide(append, 4, markdown, folder)
+		html += parse_slide(append, 4, markdown, folder, first=True)
 	html += """
 			</div>
 		</div>
@@ -110,10 +110,11 @@ def getHtml(pres, js, prepend=False, append=False):
 """
 	return(html)
 
-def parse_slide(slide, tabs, markdown, folder):
+def parse_slide(slide, tabs, markdown, folder, first=False):
 	slide_html = ""
-	slide_html += "\t" * tabs + "<section>\n"
-	tabs += 1
+	if not first:
+		slide_html += "\t" * tabs + "<section>\n"
+		tabs += 1
 	try:
 		slide_html += "\t" * tabs + parse_md(slide["md"], tabs, markdown, folder) + "\n"
 	except KeyError:
@@ -122,8 +123,9 @@ def parse_slide(slide, tabs, markdown, folder):
 		except KeyError:
 			for x in slide["slides"]:
 				slide_html += parse_slide(x, tabs, markdown, folder)
-	tabs -= 1
-	slide_html += "\t" * tabs + "</section>\n"
+	if not first:
+		tabs -= 1
+		slide_html += "\t" * tabs + "</section>\n"
 	return (slide_html)
 
 def parse_md(md_file, tabs, markdown, folder):
