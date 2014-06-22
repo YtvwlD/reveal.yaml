@@ -41,7 +41,9 @@ def getHtml(pres, js, prepend=False, append=False):
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+"""
+	if js:
+		html += """
 		<link rel="stylesheet" href="reveal.js/css/reveal.css">
 		<link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme">
 
@@ -64,6 +66,8 @@ def getHtml(pres, js, prepend=False, append=False):
 		
 		<script src="reveal.js/lib/js/head.min.js"></script>
 		<script src="reveal.js/js/reveal.js"></script>
+"""
+	html += """
 	</head>
 	
 	<body>
@@ -78,6 +82,9 @@ def getHtml(pres, js, prepend=False, append=False):
 	html += """
 			</div>
 		</div>
+"""
+	if js:
+		html += """
 		<!-- TODO: Pull the configuration below from the YAML. -->
 		<script>
 			// Full list of configuration options available here:
@@ -104,7 +111,8 @@ def getHtml(pres, js, prepend=False, append=False):
 			});
 
 		</script>
-
+"""
+	html += """
 	</body>
 </html>
 """
