@@ -1,4 +1,4 @@
-# reveal.yaml - YAML-based presentations with reveal.js
+﻿# reveal.yaml - YAML-based presentations with reveal.js
 # Copyright (C) 2014 Niklas Sombert
 #
 # This program is free software: you can redistribute it and/or modify
@@ -76,6 +76,7 @@ def getHtml(pres, js, prepend=False, append=False):
 """
 	if prepend:
 		html += parse_slide(prepend, 4, markdown, folder, first=True)
+	html += parse_slide({"slides": [{"text": pres_yaml["title"] + "<br>" + pres_yaml["subtitle"]}]}, 4, markdown, folder, first=True)
 	html += parse_slide(pres_yaml, 4, markdown, folder, first=True)
 	if append:
 		html += parse_slide(append, 4, markdown, folder, first=True)
