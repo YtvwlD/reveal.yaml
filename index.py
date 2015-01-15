@@ -41,7 +41,7 @@ def run(environ, start_response):
 		if get == "zip":
 			response = Response("", mimetype="application/zip")
 		else: # assume get == "html"
-			html = getHtml(pres, (get!="nojs"))
+			html = getHtml(pres, (get!="nojs"), url=request.url)
 			response = Response(html, mimetype="text/html")
 	except:
 		try:

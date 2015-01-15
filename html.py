@@ -19,7 +19,7 @@ from yaml import load
 from markdown import Markdown
 import codecs
 
-def getHtml(pres, js, prepend=False, append=False):
+def getHtml(pres, js, prepend=False, append=False, url=""):
 	folder = path.join("data", pres)
 	with open(path.join(folder, "index.yaml")) as pres_file:
 		pres_yaml = pres_file.read()
@@ -76,7 +76,7 @@ def getHtml(pres, js, prepend=False, append=False):
 """
 	if prepend:
 		html += parse_slide(prepend, 4, markdown, folder, first=True)
-	html += parse_slide({"slides": [{"text": "<h1>" + pres_yaml["title"] + "</h1><br><h3>" + pres_yaml["subtitle"] + "</h3>"}]}, 4, markdown, folder, first=True)
+	html += parse_slide({"slides": [{"text": "<h1>" + pres_yaml["title"] + "</h1><br><h3>" + pres_yaml["subtitle"] + "</h3>"}, {"text": "<h1>Online</h1><br><pre>" + url + "</pre><br><a href='./?p=" + pres + "&get=zip'>Download</a>"}]}, 4, markdown, folder, first=True)
 	html += parse_slide(pres_yaml, 4, markdown, folder, first=True)
 	if append:
 		html += parse_slide(append, 4, markdown, folder, first=True)
