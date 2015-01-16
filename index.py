@@ -36,12 +36,14 @@ def run(environ, start_response):
 	get = request.args.get("get")
 	if get is None:
 		get = "html"
+		
+	url = request.url.replace("/index.py/?", "/?")
 
 	try:
 		if get == "zip":
 			response = Response("", mimetype="application/zip")
 		else: # assume get == "html"
-			html = getHtml(pres, (get!="nojs"), url=request.url)
+			html = getHtml(pres, (get!="nojs"), url=url)
 			response = Response(html, mimetype="text/html")
 	except:
 		try:
