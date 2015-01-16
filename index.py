@@ -18,6 +18,11 @@
 
 from wsgiref.handlers import CGIHandler
 from werkzeug.wrappers import Request, Response
+
+from zipfile import ZipFile
+from tempfile import mktemp
+import os
+
 from html import getHtml
 
 try:
@@ -41,7 +46,22 @@ def run(environ, start_response):
 
 	try:
 		if get == "zip":
-			response = Response("", mimetype="application/zip")
+			zipfilename = mktemp(".zip")
+			zipfile = ZipFile(zipfilename, "w")
+			for root, dirs, files in os.walk(os.path.join("data", pres)):
+				for filename in files:
+					zipfile.write(os.path.join(root,filename))
+			#TODO: Does this work?
+			HTMLfileName = mktemp(".html", "index-")
+			with open(HTMLfileName, "w") as HTMLfile:
+				HTMLtext = getHtml(pres, True, url=url)
+				HTMLfile.write(HTMLtext)
+			zipfile.write(HTMLfileName)
+			zipfile.close()
+			with open(zipfilename, "r") as zipfile:
+				response = Response(zipfile.read(), mimetype="application/zip")
+			os.unlink(zipfilename)
+			os.unlink(HTMLfileName)
 		else: # assume get == "html"
 			html = getHtml(pres, (get!="nojs"), url=url)
 			response = Response(html, mimetype="text/html")
