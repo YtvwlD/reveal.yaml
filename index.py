@@ -55,7 +55,7 @@ def run(environ, start_response):
 			HTMLfileName = mktemp(".html", "index-")
 			with open(HTMLfileName, "w") as HTMLfile:
 				HTMLtext = getHtml(pres, True, url=url)
-				HTMLfile.write(HTMLtext)
+				HTMLfile.write(HTMLtext.encode("utf-8"))
 			zipfile.write(HTMLfileName)
 			zipfile.close()
 			with open(zipfilename, "r") as zipfile:
