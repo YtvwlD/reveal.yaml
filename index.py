@@ -50,13 +50,13 @@ def run(environ, start_response):
 			zipfile = ZipFile(zipfilename, "w")
 			for root, dirs, files in os.walk(os.path.join("data", pres)):
 				for filename in files:
-					zipfile.write(os.path.join(root,filename))
+					zipfile.write(os.path.join(root,filename), os.path.join(os.path.split(root)[2:], filename))
 			#TODO: Does this work?
-			HTMLfileName = mktemp(".html", "index-")
+			HTMLfileName = mktemp()
 			with open(HTMLfileName, "w") as HTMLfile:
 				HTMLtext = getHtml(pres, True, url=url)
 				HTMLfile.write(HTMLtext.encode("utf-8"))
-			zipfile.write(HTMLfileName)
+			zipfile.write(HTMLfileName, "index.html")
 			zipfile.close()
 			with open(zipfilename, "r") as zipfile:
 				response = Response(zipfile.read(), mimetype="application/zip")
