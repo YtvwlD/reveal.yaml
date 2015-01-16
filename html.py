@@ -32,16 +32,16 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 	<head>
 		<meta charset="utf-8">
 
-		<title>{}</title>
+		<title>{0} - {1}</title>
 
-		<meta name="description" content="{}">
+		<meta name="description" content="{1}">
 		<!--<meta name="author" content="Hakim El Hattab">-->
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-""".format(pres_yaml["title"] + " - " + pres_yaml["subtitle"], pres_yaml["subtitle"])
+""".format(pres_yaml["title"], pres_yaml["subtitle"])
 	if js:
 		html += """
 		<link rel="stylesheet" href="reveal.js/css/reveal.css">
@@ -76,7 +76,7 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 """
 	if prepend:
 		html += parse_slide(prepend, 4, markdown, folder, first=True)
-	html += parse_slide({"slides": [{"text": "<h1>" + pres_yaml["title"] + "</h1><br><h3>" + pres_yaml["subtitle"] + "</h3>"}, {"text": "<h1>Online</h1><br><pre>" + url + "</pre><br><a href='./?p=" + pres + "&get=zip'>Download</a>"}]}, 4, markdown, folder, first=True)
+	html += parse_slide({"slides": [{"text": "<h1>{}</h1><br><h3>{}</h3>".format(pres_yaml["title"], pres_yaml["subtitle"])}, {"text": "<h1>Online</h1><br><pre>{}</pre><br><a href='./?p={}&get=zip'>Download</a>".format(url, pres)}]}, 4, markdown, folder, first=True)
 	html += parse_slide(pres_yaml, 4, markdown, folder, first=True)
 	if append:
 		html += parse_slide(append, 4, markdown, folder, first=True)
@@ -156,10 +156,9 @@ def parse_md(md_file, tabs, markdown, folder):
 	for line in md_result.splitlines():
 		if line.startswith("<div class=\"codehilite\"><pre>"):
 			code = True
-		if code:
-			md_result_with_tabs += line + "\n"
-		else:
-			md_result_with_tabs += "\t" * tabs + line + "\n"
+		if not code:
+			md_result_with_tabs += "\t" * tabs
+		md_result_with_tabs += line + "\n"
 		if line.endswith("</pre></div>"):
 			code = False
 	return (md_result_with_tabs)
