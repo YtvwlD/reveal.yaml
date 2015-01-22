@@ -54,7 +54,7 @@ def run(environ, start_response):
 					zipfile.write(os.path.join(root,filename), os.path.join(base, filename))
 			for root, dirs, files in os.walk("reveal.js"):
 				for filename in files:
-					zipfile.write(os.path.join(root, filename)
+					zipfile.write(os.path.join(root, filename))
 			#TODO: Does this work?
 			HTMLfileName = mktemp()
 			with open(HTMLfileName, "w") as HTMLfile:
