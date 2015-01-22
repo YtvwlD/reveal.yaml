@@ -49,8 +49,9 @@ def run(environ, start_response):
 			zipfilename = mktemp(".zip")
 			zipfile = ZipFile(zipfilename, "w")
 			for root, dirs, files in os.walk(os.path.join("data", pres)):
+				base = os.path.join(".", *(os.path.split(root)[2:]))
 				for filename in files:
-					zipfile.write(os.path.join(root,filename), os.path.join(os.path.split(root)[2:], filename))
+					zipfile.write(os.path.join(root,filename), os.path.join(base, filename))
 			for root, dirs, files in os.walk("reveal.js"):
 				for filename in files:
 					zipfile.write(os.path.join(root, filename)
