@@ -19,11 +19,8 @@
 from wsgiref.handlers import CGIHandler
 from werkzeug.wrappers import Request, Response
 
-from zipfile import ZipFile
-from tempfile import mktemp
-import os
-
 from html import getHtml
+from zip import getZip
 
 try:
 	from sentry import Client
@@ -46,26 +43,8 @@ def run(environ, start_response):
 
 	try:
 		if get == "zip":
-			zipfilename = mktemp(".zip")
-			zipfile = ZipFile(zipfilename, "w")
-			for root, dirs, files in os.walk(os.path.join("data", pres)):
-				base = os.path.join(".", *(os.path.split(root)[2:]))
-				for filename in files:
-					zipfile.write(os.path.join(root,filename), os.path.join(base, filename))
-			for root, dirs, files in os.walk("reveal.js"):
-				for filename in files:
-					zipfile.write(os.path.join(root, filename))
-			#TODO: Does this work?
-			HTMLfileName = mktemp()
-			with open(HTMLfileName, "w") as HTMLfile:
-				HTMLtext = getHtml(pres, True, url=url)
-				HTMLfile.write(HTMLtext.encode("utf-8"))
-			zipfile.write(HTMLfileName, "index.html")
-			zipfile.close()
-			with open(zipfilename, "r") as zipfile:
-				response = Response(zipfile.read(), mimetype="application/zip")
-			os.unlink(zipfilename)
-			os.unlink(HTMLfileName)
+			zipfile = getZip(pres, (get!="nojs"), url=url)
+			Response(zipfile, mimetype="application/zip")
 		else: # assume get == "html"
 			html = getHtml(pres, (get!="nojs"), url=url)
 			response = Response(html, mimetype="text/html")
