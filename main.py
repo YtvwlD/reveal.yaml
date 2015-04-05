@@ -45,7 +45,7 @@ def app(request):
 			html = getHtml(pres, (get!="nojs"), url=url)
 			response = Response(html, mimetype="text/html")
 	except:
-		raise
+		#raise
 		#try:
 		#	client.captureException()
 		#	add_to_err = "This incident has been logged."
@@ -53,6 +53,7 @@ def app(request):
 		#	add_to_err = "This incident hasn't been logged, because logging isn't configured."
 		#except:
 		#	add_to_err = "This incident hasn't been logged, because a error occured while logging the previous error."
-		#html = getHtml("error", (get!="nojs"), append={"text": add_to_err})
-		#response = Response(html, mimetype="text/html")
+		add_to_err = ""
+		html = getHtml("error", (get!="nojs"), append={"text": add_to_err})
+		response = Response(html, mimetype="text/html")
 	return (response)
