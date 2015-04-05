@@ -28,9 +28,8 @@ try:
 except ImportError:
 	client = None
 
-def run(environ, start_response):
-	request = Request(environ)
-
+@Request.application
+def app(request):
 	pres = request.args.get("p")
 	if pres is None:
 		pres = "welcome"
@@ -49,16 +48,17 @@ def run(environ, start_response):
 			html = getHtml(pres, (get!="nojs"), url=url)
 			response = Response(html, mimetype="text/html")
 	except:
-		try:
-			client.captureException()
-			add_to_err = "This incident has been logged."
-		except AttributeError:
-			add_to_err = "This incident hasn't been logged, because logging isn't configured."
-		except:
-			add_to_err = "This incident hasn't been logged, because a error occured while logging the previous error."
-		html = getHtml("error", (get!="nojs"), append={"text": add_to_err})
-		response = Response(html, mimetype="text/html")
-	return (response(environ, start_response))
+		raise
+		#try:
+		#	client.captureException()
+		#	add_to_err = "This incident has been logged."
+		#except AttributeError:
+		#	add_to_err = "This incident hasn't been logged, because logging isn't configured."
+		#except:
+		#	add_to_err = "This incident hasn't been logged, because a error occured while logging the previous error."
+		#html = getHtml("error", (get!="nojs"), append={"text": add_to_err})
+		#response = Response(html, mimetype="text/html")
+	return (response)
 
 if __name__ == "__main__":
-	CGIHandler().run(run)
+	CGIHandler().run(app)
