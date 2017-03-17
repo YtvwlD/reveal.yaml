@@ -18,13 +18,14 @@ from os import path
 from yaml import load
 from markdown import Markdown
 import codecs
+from pygments.styles import get_style_by_name
 
 def getHtml(pres, js, prepend=False, append=False, url=""):
 	folder = path.join("data", pres)
 	with open(path.join(folder, "index.yaml")) as pres_file:
 		pres_yaml = pres_file.read()
 	pres_yaml = load(pres_yaml)
-	markdown = Markdown(extensions=["extra", "codehilite", "wikilinks"], extension_configs={"codehilite": { "noclasses": True }})
+	markdown = Markdown(extensions=["extra", "codehilite", "wikilinks"], extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name("friendly") }})
 	html = ""
 	html += """
 <!doctype html>
