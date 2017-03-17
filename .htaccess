@@ -1,4 +1,4 @@
 Options +ExecCGI
-AddHandler cgi-script index.py
+AddHandler cgi-script .py
 DirectoryIndex index.py
 
