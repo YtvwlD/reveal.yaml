@@ -22,7 +22,7 @@ from zipfile import ZipFile
 from tempfile import mktemp
 from sys import argv
 
-from html import getHtml
+from gethtml import getHtml
 
 def getZip(pres, js, url=""):
 	zipfilename = mktemp(".zip")
