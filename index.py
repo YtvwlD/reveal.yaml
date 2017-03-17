@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 # reveal.yaml - YAML-based presentations with reveal.js
 # Copyright (C) 2014-2015 Niklas Sombert
 #
