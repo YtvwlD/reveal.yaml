@@ -45,19 +45,19 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 	if js:
 		html += """
 		<link rel="stylesheet" href="reveal.js/css/reveal.css">
-		<link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme">
+		<link rel="stylesheet" href="reveal.js/css/theme/{}.css" id="theme">
 
 		<!-- For syntax highlighting: TODO -->
 
 		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
 		<script>
-			if( window.location.search.match( /print-pdf/gi ) ) {
+			if( window.location.search.match( /print-pdf/gi ) ) {{
 				var link = document.createElement( 'link' );
 				link.rel = 'stylesheet';
 				link.type = 'text/css';
 				link.href = 'reveal.js/css/print/pdf.css';
 				document.getElementsByTagName( 'head' )[0].appendChild( link );
-			}
+			}}
 		</script>
 
 		<!--[if lt IE 9]>
@@ -66,7 +66,7 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 		
 		<script src="reveal.js/lib/js/head.min.js"></script>
 		<script src="reveal.js/js/reveal.js"></script>
-"""
+""".format(pres_yaml.get("theme", "default"))
 	html += """
 	</head>
 	
@@ -162,4 +162,5 @@ def parse_md(md_file, tabs, markdown, folder):
 		if line.endswith("</pre></div>"):
 			code = False
 	return (md_result_with_tabs)
+
 
