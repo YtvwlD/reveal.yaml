@@ -41,7 +41,7 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-""".format(pres_yaml["title"], pres_yaml["subtitle"])
+""".format(pres_yaml.get("title", "presentation"), pres_yaml("subtitle", ""))
 	if js:
 		html += """
 		<link rel="stylesheet" href="reveal.js/css/reveal.css">
