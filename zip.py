@@ -36,7 +36,7 @@ def getZip(pres, js, url=""):
     #TODO: Does this work?
     HTMLfileName = mktemp()
     with open(HTMLfileName, "w") as HTMLfile:
-        HTMLtext = getHtml(pres, True, url=url)
+        HTMLtext = getHtml(pres, js, url=url)
         HTMLfile.write(HTMLtext.encode("utf-8"))
     zipfile.write(HTMLfileName, "index.html")
     zipfile.close()
