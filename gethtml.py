@@ -22,36 +22,36 @@ from pygments.styles import get_style_by_name
 import jinja2
 
 env = jinja2.Environment(
-	loader=jinja2.FileSystemLoader("."),
-	autoescape=False
+    loader=jinja2.FileSystemLoader("."),
+    autoescape=False
 )
 
 def getHtml(pres, js, prepend=False, append=False, url=""):
-	folder = path.join("data", pres)
-	with open(path.join(folder, "index.yaml")) as pres_file:
-		pres_yaml = pres_file.read()
-	pres_yaml = load(pres_yaml)
-	markdown = Markdown(
-		extensions=["extra", "codehilite", "wikilinks"],
-		extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name(pres_yaml.get("pygments_style", "friendly")) }}
-		)
-	return env.get_template("html.j2").render(
-		js=js,
-		title=pres_yaml.get("title", "Presentation"),
-		subtitle=pres_yaml.get("subtitle", ""),
-		author=pres_yaml.get("author", None),
-		theme=pres_yaml.get("theme", "black"), # look at reveal.js/css/theme
-		slides=pres_yaml,
-		markdown=markdown,
-		folder=folder,
-		codecs=codecs,
-		path=path,
-		url=url,
-		pres=pres,
-		controls=pres_yaml.get("controls", "true"),
-		progress=pres_yaml.get("progress", "true"),
-		history=pres_yaml.get("history", "true"),
-		center=pres_yaml.get("center", "true"),
-		transition=pres_yaml.get("transition", "default") # default,cube,page,concave,zoom,linearfade,none
-	)
+    folder = path.join("data", pres)
+    with open(path.join(folder, "index.yaml")) as pres_file:
+        pres_yaml = pres_file.read()
+    pres_yaml = load(pres_yaml)
+    markdown = Markdown(
+        extensions=["extra", "codehilite", "wikilinks"],
+        extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name(pres_yaml.get("pygments_style", "friendly")) }}
+        )
+    return env.get_template("html.j2").render(
+        js=js,
+        title=pres_yaml.get("title", "Presentation"),
+        subtitle=pres_yaml.get("subtitle", ""),
+        author=pres_yaml.get("author", None),
+        theme=pres_yaml.get("theme", "black"), # look at reveal.js/css/theme
+        slides=pres_yaml,
+        markdown=markdown,
+        folder=folder,
+        codecs=codecs,
+        path=path,
+        url=url,
+        pres=pres,
+        controls=pres_yaml.get("controls", "true"),
+        progress=pres_yaml.get("progress", "true"),
+        history=pres_yaml.get("history", "true"),
+        center=pres_yaml.get("center", "true"),
+        transition=pres_yaml.get("transition", "default") # default,cube,page,concave,zoom,linearfade,none
+    )
 
