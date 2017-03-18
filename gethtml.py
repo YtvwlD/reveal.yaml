@@ -25,7 +25,10 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 	with open(path.join(folder, "index.yaml")) as pres_file:
 		pres_yaml = pres_file.read()
 	pres_yaml = load(pres_yaml)
-	markdown = Markdown(extensions=["extra", "codehilite", "wikilinks"], extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name("friendly") }})
+	markdown = Markdown(
+		extensions=["extra", "codehilite", "wikilinks"],
+		extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name("friendly") }}
+		)
 	html = ""
 	html += """
 <!doctype html>
