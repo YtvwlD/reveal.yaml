@@ -33,7 +33,7 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 	pres_yaml = load(pres_yaml)
 	markdown = Markdown(
 		extensions=["extra", "codehilite", "wikilinks"],
-		extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name("friendly") }}
+		extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name(pres_yaml.get("pygments_style", "friendly")) }}
 		)
 	slides_html = ""
 	if prepend:
