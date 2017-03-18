@@ -143,14 +143,15 @@ def parse_slide(slide, tabs, markdown, folder, first=False):
 	if not first:
 		slide_html += "\t" * tabs + "<section>\n"
 		tabs += 1
-	try:
+	if "md" in slide.keys():
 		slide_html += "\t" * tabs + parse_md(slide["md"], tabs, markdown, folder) + "\n"
-	except KeyError:
-		try:
-			slide_html += "\t" * tabs + slide["text"] + "\n"
-		except KeyError:
-			for x in slide["slides"]:
-				slide_html += parse_slide(x, tabs, markdown, folder)
+	elif "text" in slide.keys():
+		slide_html += "\t" * tabs + slide["text"] + "\n"
+	elif "slides" in slide.keys():
+		for x in slide["slides"]:
+			slide_html += parse_slide(x, tabs, markdown, folder)
+	else:
+		pass # If a slide is empty, don't put anything in it.
 	if not first:
 		tabs -= 1
 		slide_html += "\t" * tabs + "</section>\n"
