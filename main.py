@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from werkzeug.wrappers import Request, Response
+import traceback
 
 from gethtml import getHtml
 from zip import getZip
@@ -56,4 +57,5 @@ def app(request):
 		add_to_err = ""
 		html = getHtml("error", (get!="nojs"), append={"text": add_to_err})
 		response = Response(html, mimetype="text/html")
+		traceback.print_exc()
 	return (response)
