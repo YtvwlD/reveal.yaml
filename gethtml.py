@@ -80,7 +80,12 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 """
 	if prepend:
 		html += parse_slide(prepend, 4, markdown, folder, first=True)
-	html += parse_slide({"slides": [{"text": "<h1>{}</h1><br><h3>{}</h3>".format(pres_yaml["title"], pres_yaml["subtitle"])}, {"text": "<h1>Online</h1><br><pre>{}</pre><br><a href='./?p={}&get=zip'>Download</a>".format(url, pres)}]}, 4, markdown, folder, first=True)
+	html += parse_slide({
+			"slides": [
+				{"text": "<h1>{}</h1><br><h3>{}</h3>".format(pres_yaml["title"], pres_yaml["subtitle"])},
+				{"text": "<h1>Online</h1><br><pre>{}</pre><br><a href='./?p={}&get=zip'>Download</a>".format(url, pres)}
+				]
+		}, 4, markdown, folder, first=True)
 	html += parse_slide(pres_yaml, 4, markdown, folder, first=True)
 	if append:
 		html += parse_slide(append, 4, markdown, folder, first=True)
