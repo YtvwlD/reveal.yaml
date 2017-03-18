@@ -73,15 +73,15 @@
         <div class="reveal">
             <div class="slides">
                 {% if prepend %}
-                {{ render_slide(prepend) | indent(indentfirst=True) }}
+                {{ render_slide(prepend) | indent(width=12, indentfirst=True) }}
                 {% endif %}
                 {{ render_slide({"slides": [
                         {"text": "<h1>{}</h1><br><h3>{}</h3>".format(title, subtitle)},
                         {"text": "<h1>Online</h1><br><pre>{}</pre><br><a href='./?p={}&get=zip'>Download</a>".format(url, pres)}
-                    ]}) | indent(indentfirst=True) }}
-                {{ render_slide(slides) | indent(indentfirst=True) }}
+                    ]}) | indent(width=12, indentfirst=True) }}
+                {{ render_slide(slides) | indent(width=12, indentfirst=True) }}
                 {% if append %}
-                {{ render_slide(append) | indent(indentfirst=True) }}
+                {{ render_slide(append) | indent(width=12, indentfirst=True) }}
                 {% endif %}
             </div>
         </div>
