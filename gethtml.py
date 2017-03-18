@@ -47,13 +47,6 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 	slides_html += parse_slide(pres_yaml, 4, markdown, folder, first=True)
 	if append:
 		slides_html += parse_slide(append, 4, markdown, folder, first=True)
-	config = []
-	dest_src_key_othwerwise(config, pres_yaml, "controls", "true")
-	dest_src_key_othwerwise(config, pres_yaml, "progress", "true")
-	dest_src_key_othwerwise(config, pres_yaml, "history", "true")
-	dest_src_key_othwerwise(config, pres_yaml, "center", "true")
-	dest_src_key_othwerwise(config, pres_yaml, "theme", "")
-	dest_src_key_othwerwise(config, pres_yaml, "transition", "")
 	return env.get_template("html.j2").render(
 		js=js,
 		title=pres_yaml.get("title", "Presentation"),
@@ -66,12 +59,6 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 		center=pres_yaml.get("center", "true"),
 		transition=pres_yaml.get("transition", "default")
 	)
-
-def dest_src_key_othwerwise(dest, src, key, otherwise):
-	try:
-		dest.append(src[key])
-	except KeyError:
-		dest.append(otherwise)
 
 def parse_slide(slide, tabs, markdown, folder, first=False):
 	slide_html = ""
