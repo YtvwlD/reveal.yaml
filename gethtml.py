@@ -51,13 +51,13 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 		js=js,
 		title=pres_yaml.get("title", "Presentation"),
 		subtitle=pres_yaml.get("subtitle", ""),
-		theme=pres_yaml.get("theme", "black"),
+		theme=pres_yaml.get("theme", "black"), # look at reveal.js/css/theme
 		slides_html=slides_html, # TODO
 		controls=pres_yaml.get("controls", "true"),
 		progress=pres_yaml.get("progress", "true"),
 		history=pres_yaml.get("history", "true"),
 		center=pres_yaml.get("center", "true"),
-		transition=pres_yaml.get("transition", "default")
+		transition=pres_yaml.get("transition", "default") # default,cube,page,concave,zoom,linearfade,none
 	)
 
 def parse_slide(slide, tabs, markdown, folder, first=False):
