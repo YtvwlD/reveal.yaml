@@ -35,65 +35,23 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 		extensions=["extra", "codehilite", "wikilinks"],
 		extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name(pres_yaml.get("pygments_style", "friendly")) }}
 		)
-	slides_html = ""
-	if prepend:
-		slides_html += parse_slide(prepend, 4, markdown, folder, first=True)
-	slides_html += parse_slide({
-			"slides": [
-				{"text": "<h1>{}</h1><br><h3>{}</h3>".format(pres_yaml.get("title", "Presentation"), pres_yaml.get("subtitle", ""))},
-				{"text": "<h1>Online</h1><br><pre>{}</pre><br><a href='./?p={}&get=zip'>Download</a>".format(url, pres)}
-				]
-		}, 4, markdown, folder, first=True)
-	slides_html += parse_slide(pres_yaml, 4, markdown, folder, first=True)
-	if append:
-		slides_html += parse_slide(append, 4, markdown, folder, first=True)
 	return env.get_template("html.j2").render(
 		js=js,
 		title=pres_yaml.get("title", "Presentation"),
-		subtitle=pres_yaml.get("subtitle", None),
+		subtitle=pres_yaml.get("subtitle", ""),
 		author=pres_yaml.get("author", None),
 		theme=pres_yaml.get("theme", "black"), # look at reveal.js/css/theme
-		slides_html=slides_html, # TODO
+		slides=pres_yaml,
+		markdown=markdown,
+		folder=folder,
+		codecs=codecs,
+		path=path,
+		url=url,
+		pres=pres,
 		controls=pres_yaml.get("controls", "true"),
 		progress=pres_yaml.get("progress", "true"),
 		history=pres_yaml.get("history", "true"),
 		center=pres_yaml.get("center", "true"),
 		transition=pres_yaml.get("transition", "default") # default,cube,page,concave,zoom,linearfade,none
 	)
-
-def parse_slide(slide, tabs, markdown, folder, first=False):
-	slide_html = ""
-	if not first:
-		slide_html += "\t" * tabs + "<section>\n"
-		tabs += 1
-	if "md" in slide.keys():
-		slide_html += "\t" * tabs + parse_md(slide["md"], tabs, markdown, folder) + "\n"
-	elif "text" in slide.keys():
-		slide_html += "\t" * tabs + slide["text"] + "\n"
-	elif "slides" in slide.keys():
-		for x in slide["slides"]:
-			slide_html += parse_slide(x, tabs, markdown, folder)
-	else:
-		pass # If a slide is empty, don't put anything in it.
-	if not first:
-		tabs -= 1
-		slide_html += "\t" * tabs + "</section>\n"
-	return (slide_html)
-
-def parse_md(md_file, tabs, markdown, folder):
-	markdown.reset()
-	with codecs.open(path.join(folder, md_file), encoding="UTF-8") as md:
-		md_result = markdown.convert(md.read())
-	md_result_with_tabs = ""
-	code = False
-	for line in md_result.splitlines():
-		if line.startswith("<div class=\"codehilite\"><pre>"):
-			code = True
-		if not code:
-			md_result_with_tabs += "\t" * tabs
-		md_result_with_tabs += line + "\n"
-		if line.endswith("</pre></div>"):
-			code = False
-	return (md_result_with_tabs)
-
 

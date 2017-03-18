@@ -1,3 +1,28 @@
+{% macro render_subsequent_slide(slide) %}
+<section>
+{{ render_slide(slide) | indent(indentfirst=True) }}
+</section>
+{% endmacro %}
+
+{% macro render_slide(slide) %}
+{% if "md" in slide.keys() %}
+{{ render_md(slide["md"]) | indent(indentfirst=True) }}
+{% elif "text" in slide.keys() %}
+{{ slide["text"] | indent(indentfirst=True) }}
+{% elif "slides" in slide.keys() %}
+{% for x in slide["slides"] %}
+{{ render_subsequent_slide(x) | indent(indentfirst=True) }}
+{% endfor %}
+{% endif %}
+{% endmacro %}
+
+{% macro render_md(md_file) %}
+{% set markdown = markdown.reset() %}
+{% set md = codecs.open(path.join(folder, md_file), encoding="utf-8") %}
+{{ markdown.convert(md.read()) }}
+{% set md = md.close() %}
+{% endmacro %}
+
 <!doctype html>
 <html>
 	<head>
@@ -47,8 +72,17 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				{{ slides_html }}
-				{# TODO #}
+				{% if prepend %}
+				{{ render_slide(prepend) | indent(indentfirst=True) }}
+				{% endif %}
+				{{ render_slide({"slides": [
+						{"text": "<h1>{}</h1><br><h3>{}</h3>".format(title, subtitle)},
+						{"text": "<h1>Online</h1><br><pre>{}</pre><br><a href='./?p={}&get=zip'>Download</a>".format(url, pres)}
+					]}) | indent(indentfirst=True) }}
+				{{ render_slide(slides) | indent(indentfirst=True) }}
+				{% if append %}
+				{{ render_slide(append) | indent(indentfirst=True) }}
+				{% endif %}
 			</div>
 		</div>
 		{% if js %}
