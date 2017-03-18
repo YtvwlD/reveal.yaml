@@ -51,7 +51,7 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 		js=js,
 		title=pres_yaml.get("title", "Presentation"),
 		subtitle=pres_yaml.get("subtitle", ""),
-		theme=pres_yaml.get("theme", "default"),
+		theme=pres_yaml.get("theme", "black"),
 		slides_html=slides_html, # TODO
 		controls=pres_yaml.get("controls", "true"),
 		progress=pres_yaml.get("progress", "true"),
