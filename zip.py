@@ -20,7 +20,6 @@ import os
 
 from zipfile import ZipFile
 from tempfile import mktemp
-from sys import argv
 
 from gethtml import getHtml
 
