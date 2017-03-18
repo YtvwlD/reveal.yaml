@@ -35,7 +35,7 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
         extensions=["extra", "codehilite", "wikilinks"],
         extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name(pres_yaml.get("pygments_style", "friendly")) }}
         )
-    return env.get_template("html.j2").render(
+    html = env.get_template("html.j2").render(
         js=js,
         title=pres_yaml.get("title", "Presentation"),
         subtitle=pres_yaml.get("subtitle", ""),
@@ -54,4 +54,6 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
         center=pres_yaml.get("center", "true"),
         transition=pres_yaml.get("transition", "default") # default,cube,page,concave,zoom,linearfade,none
     )
+    # remove empty lines:
+    return "\n".join([line for line in html.split('\n') if line.strip()])
 
