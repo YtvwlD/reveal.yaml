@@ -48,6 +48,8 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
         path=path,
         url=url,
         pres=pres,
+        append=append,
+        prepend=prepend,
         controls=pres_yaml.get("controls", "true"),
         progress=pres_yaml.get("progress", "true"),
         history=pres_yaml.get("history", "true"),
