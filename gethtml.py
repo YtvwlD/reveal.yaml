@@ -19,6 +19,12 @@ from yaml import load
 from markdown import Markdown
 import codecs
 from pygments.styles import get_style_by_name
+import jinja2
+
+env = jinja2.Environment(
+	loader=jinja2.FileSystemLoader("."),
+	autoescape=False
+)
 
 def getHtml(pres, js, prepend=False, append=False, url=""):
 	folder = path.join("data", pres)
@@ -29,70 +35,18 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 		extensions=["extra", "codehilite", "wikilinks"],
 		extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name("friendly") }}
 		)
-	html = ""
-	html += """
-<!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8">
-
-		<title>{0} - {1}</title>
-
-		<meta name="description" content="{1}">
-		<!--<meta name="author" content="Hakim El Hattab">-->
-
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-""".format(pres_yaml.get("title", "presentation"), pres_yaml.get("subtitle", ""))
-	if js:
-		html += """
-		<link rel="stylesheet" href="reveal.js/css/reveal.css">
-		<link rel="stylesheet" href="reveal.js/css/theme/{}.css" id="theme">
-
-		<!-- For syntax highlighting: TODO -->
-
-		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
-		<script>
-			if( window.location.search.match( /print-pdf/gi ) ) {{
-				var link = document.createElement( 'link' );
-				link.rel = 'stylesheet';
-				link.type = 'text/css';
-				link.href = 'reveal.js/css/print/pdf.css';
-				document.getElementsByTagName( 'head' )[0].appendChild( link );
-			}}
-		</script>
-
-		<!--[if lt IE 9]>
-		<script src="reveal.js/lib/js/html5shiv.js"></script>
-		<![endif]-->
-		
-		<script src="reveal.js/lib/js/head.min.js"></script>
-		<script src="reveal.js/js/reveal.js"></script>
-""".format(pres_yaml.get("theme", "default"))
-	html += """
-	</head>
-	
-	<body>
-		<div class="reveal">
-			<div class="slides">
-"""
+	slides_html = ""
 	if prepend:
-		html += parse_slide(prepend, 4, markdown, folder, first=True)
-	html += parse_slide({
+		slides_html += parse_slide(prepend, 4, markdown, folder, first=True)
+	slides_html += parse_slide({
 			"slides": [
 				{"text": "<h1>{}</h1><br><h3>{}</h3>".format(pres_yaml.get("title", "Presentation"), pres_yaml.get("subtitle", ""))},
 				{"text": "<h1>Online</h1><br><pre>{}</pre><br><a href='./?p={}&get=zip'>Download</a>".format(url, pres)}
 				]
 		}, 4, markdown, folder, first=True)
-	html += parse_slide(pres_yaml, 4, markdown, folder, first=True)
+	slides_html += parse_slide(pres_yaml, 4, markdown, folder, first=True)
 	if append:
-		html += parse_slide(append, 4, markdown, folder, first=True)
-	html += """
-			</div>
-		</div>
-"""
+		slides_html += parse_slide(append, 4, markdown, folder, first=True)
 	config = []
 	dest_src_key_othwerwise(config, pres_yaml, "controls", "true")
 	dest_src_key_othwerwise(config, pres_yaml, "progress", "true")
@@ -100,37 +54,18 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 	dest_src_key_othwerwise(config, pres_yaml, "center", "true")
 	dest_src_key_othwerwise(config, pres_yaml, "theme", "")
 	dest_src_key_othwerwise(config, pres_yaml, "transition", "")
-	if js:
-		html += """
-		<!-- TODO: Pull the configuration below from the YAML. -->
-		<script>
-			// Full list of configuration options available here:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({{
-				controls: {},
-				progress: {},
-				history: {},
-				center: {},
-				theme: "{}" || Reveal.getQueryHash().theme || "default", // available themes are in /css/theme
-				transition: "{}" || Reveal.getQueryHash().transition || "default", // default/cube/page/concave/zoom/linear/fade/none
-				// Parallax scrolling
-				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
-				// parallaxBackgroundSize: '2100px 900px',
-
-				// Optional libraries used to extend on reveal.js
-				dependencies: [
-					{{ src: 'reveal.js/lib/js/classList.js', condition: function() {{ return !document.body.classList; }} }},
-					{{ src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() {{ return !!document.body.classList; }} }},
-					{{ src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() {{ return !!document.body.classList; }} }}
-				]
-			}});
-		</script>
-""".format(*config)
-	html += """
-	</body>
-</html>
-"""
-	return(html)
+	return env.get_template("html.j2").render(
+		js=js,
+		title=pres_yaml.get("title", "Presentation"),
+		subtitle=pres_yaml.get("subtitle", ""),
+		theme=pres_yaml.get("theme", "default"),
+		slides_html=slides_html, # TODO
+		controls=pres_yaml.get("controls", "true"),
+		progress=pres_yaml.get("progress", "true"),
+		history=pres_yaml.get("history", "true"),
+		center=pres_yaml.get("center", "true"),
+		transition=pres_yaml.get("transition", "default")
+	)
 
 def dest_src_key_othwerwise(dest, src, key, otherwise):
 	try:
