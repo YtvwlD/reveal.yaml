@@ -3,9 +3,13 @@
 	<head>
 		<meta charset="utf-8">
 
+		{% if subtitle %}
 		<title>{{ title }} - {{ subtitle }}</title>
-
 		<meta name="description" content="{{ subtitle }}">
+		{% else %}
+		<title>{{ title }}</title>
+		{% endif %}
+
 		{% if author %}
 		<meta name="author" content="{{ author }}">
 		{% endif %}

@@ -50,7 +50,7 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
 	return env.get_template("html.j2").render(
 		js=js,
 		title=pres_yaml.get("title", "Presentation"),
-		subtitle=pres_yaml.get("subtitle", ""),
+		subtitle=pres_yaml.get("subtitle", None),
 		author=pres_yaml.get("author", None),
 		theme=pres_yaml.get("theme", "black"), # look at reveal.js/css/theme
 		slides_html=slides_html, # TODO
