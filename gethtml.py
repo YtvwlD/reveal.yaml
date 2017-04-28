@@ -21,6 +21,11 @@ import codecs
 from pygments.styles import get_style_by_name
 import jinja2
 
+import sys
+if sys.version_info.major < 3:
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader("."),
     autoescape=False
