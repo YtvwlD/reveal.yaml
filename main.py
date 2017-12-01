@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from werkzeug.wrappers import Request, Response
+from werkzeug.exceptions import NotFound
 import traceback
 
 from gethtml import getHtml
@@ -37,8 +38,12 @@ def app(request):
         get = "html"
         
     url = request.url.replace("/index.py/?", "/?")
-
     try:
+        if "/data/" in url:
+            raise NotFound()
+        if "/reveal.js/" in url:
+            raise NotFound()
+        
         if get == "zip":
             zipfile = getZip(pres, (get!="nojs"), url=url)
             Response(zipfile, mimetype="application/zip")
