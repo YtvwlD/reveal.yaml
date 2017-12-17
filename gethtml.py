@@ -50,6 +50,8 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
         markdown=markdown,
         folder=folder,
         codecs=codecs,
+        type=type,
+        str=str,
         path=path,
         url=url,
         pres=pres,

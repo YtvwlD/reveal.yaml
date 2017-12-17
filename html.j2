@@ -9,6 +9,8 @@
 {{ render_md(slide["md"]) | indent(indentfirst=True) }}
 {% elif "text" in slide.keys() %}
 {{ slide["text"] | indent(indentfirst=True) }}
+{% elif "image" in slide.keys() %}
+{{ render_image(slide["image"]) }}
 {% elif "slides" in slide.keys() %}
 {% for x in slide["slides"] %}
 {{ render_subsequent_slide(x) | indent(indentfirst=True) }}
@@ -21,6 +23,14 @@
 {% set md = codecs.open(path.join(folder, md_file), encoding="utf-8") %}
 {{ markdown.convert(md.read()) }}
 {% set md = md.close() %}
+{% endmacro %}
+
+{% macro render_image(image_data) %}
+{% if type(image_data) == str %}
+<img src="{{ image_data }}"></img>
+{% else %}
+<img src="{{ image_data['url'] }}"</img>
+{% endif %}
 {% endmacro %}
 
 <!doctype html>
