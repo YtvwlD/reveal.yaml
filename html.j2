@@ -7,6 +7,8 @@
 {% macro render_slide(slide) %}
 {% if "md" in slide.keys() %}
 {{ render_md(slide["md"]) | indent(indentfirst=True) }}
+{% elif "mdc" in slide.keys() %}
+{{ render_mdc(slide["mdc"]) | indent(indentfirst=True) }}
 {% elif "text" in slide.keys() %}
 {{ slide["text"] | indent(indentfirst=True) }}
 {% elif "image" in slide.keys() %}
@@ -19,10 +21,15 @@
 {% endmacro %}
 
 {% macro render_md(md_file) %}
-{% set markdown = markdown.reset() %}
 {% set md = codecs.open(path.join(folder, md_file), encoding="utf-8") %}
-{{ markdown.convert(md.read()) }}
+{% set content = md.read() %}
+{{ render_mdc(content) }}
 {% set md = md.close() %}
+{% endmacro %}
+
+{% macro render_mdc(content) %}
+{% set markdown = markdown.reset() %}
+{{ markdown.convert(content) }}
 {% endmacro %}
 
 {% macro render_image(image_data) %}
