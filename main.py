@@ -32,6 +32,7 @@ def app(request):
     pres = request.args.get("p")
     if pres is None:
         pres = "welcome"
+    pres = pres.replace("/", "").replace("\\", "").replace("..", "")
     
     get = request.args.get("get")
     if get is None:
