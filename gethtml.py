@@ -31,6 +31,7 @@ env = jinja2.Environment(
     autoescape=False
 )
 
+
 def getHtml(pres, js, prepend=False, append=False, url=""):
     folder = path.join("data", pres)
     with open(path.join(folder, "index.yaml")) as pres_file:
@@ -38,14 +39,19 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
     pres_yaml = load(pres_yaml)
     markdown = Markdown(
         extensions=["extra", "codehilite", "wikilinks"],
-        extension_configs={"codehilite": { "noclasses": True, "pygments_style": get_style_by_name(pres_yaml.get("pygments_style", "friendly")) }}
-        )
+        extension_configs={"codehilite": {
+            "noclasses": True,
+            "pygments_style": get_style_by_name(
+                pres_yaml.get("pygments_style", "friendly")
+            ),
+        }}
+    )
     html = env.get_template("html.j2").render(
         js=js,
         title=pres_yaml.get("title", "Presentation"),
         subtitle=pres_yaml.get("subtitle", ""),
         author=pres_yaml.get("author", None),
-        theme=pres_yaml.get("theme", "black"), # look at reveal.js/css/theme
+        theme=pres_yaml.get("theme", "black"),  # look at reveal.js/css/theme
         slides=pres_yaml,
         markdown=markdown,
         folder=folder,
@@ -61,8 +67,8 @@ def getHtml(pres, js, prepend=False, append=False, url=""):
         progress=pres_yaml.get("progress", "true"),
         history=pres_yaml.get("history", "true"),
         center=pres_yaml.get("center", "true"),
-        transition=pres_yaml.get("transition", "default") # default,cube,page,concave,zoom,linearfade,none
+        # default,cube,page,concave,zoom,linearfade,none
+        transition=pres_yaml.get("transition", "default"),
     )
     # remove empty lines:
     return "\n".join([line for line in html.split('\n') if line.strip()])
-

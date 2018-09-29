@@ -27,6 +27,7 @@ try:
 except ImportError:
     client = None
 
+
 @Request.application
 def app(request):
     pres = request.args.get("p")
@@ -46,22 +47,22 @@ def app(request):
             raise NotFound()
         
         if get == "zip":
-            zipfile = getZip(pres, (get!="nojs"), url=url)
+            zipfile = getZip(pres, (get != "nojs"), url=url)
             response = Response(zipfile, mimetype="application/zip")
-        else: # assume get == "html"
-            html = getHtml(pres, (get!="nojs"), url=url)
+        else:  # assume get == "html"
+            html = getHtml(pres, (get != "nojs"), url=url)
             response = Response(html, mimetype="text/html")
     except:
-        #raise
-        #try:
-        #    client.captureException()
-        #    add_to_err = "This incident has been logged."
-        #except AttributeError:
-        #    add_to_err = "This incident hasn't been logged, because logging isn't configured."
-        #except:
-        #    add_to_err = "This incident hasn't been logged, because a error occured while logging the previous error."
+        # raise
+        # try:
+        #     client.captureException()
+        #     add_to_err = "This incident has been logged."
+        # except AttributeError:
+        #     add_to_err = "This incident hasn't been logged, because logging isn't configured."
+        # except:
+        #     add_to_err = "This incident hasn't been logged, because a error occured while logging the previous error."
         add_to_err = ""
-        html = getHtml("error", (get!="nojs"), append={"text": add_to_err})
+        html = getHtml("error", (get != "nojs"), append={"text": add_to_err})
         response = Response(html, mimetype="text/html")
         traceback.print_exc()
     return (response)

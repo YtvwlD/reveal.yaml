@@ -23,17 +23,18 @@ from tempfile import mktemp
 
 from gethtml import getHtml
 
+
 def getZip(pres, js, url=""):
     zipfilename = mktemp(".zip")
     zipfile = ZipFile(zipfilename, "w")
     for root, dirs, files in os.walk(os.path.join("data", pres)):
         base = os.path.join(".", *(os.path.split(root)[2:]))
         for filename in files:
-            zipfile.write(os.path.join(root,filename), os.path.join(base, filename))
+            zipfile.write(os.path.join(root, filename), os.path.join(base, filename))
     for root, dirs, files in os.walk("reveal.js"):
         for filename in files:
             zipfile.write(os.path.join(root, filename))
-    #TODO: Does this work?
+    # TODO: Does this work?
     HTMLfileName = mktemp()
     with open(HTMLfileName, "w") as HTMLfile:
         HTMLtext = getHtml(pres, js, url=url)
@@ -46,11 +47,15 @@ def getZip(pres, js, url=""):
     os.unlink(HTMLfileName)
     return response
 
+
 if __name__ == "__main__":
     from argparse import ArgumentParser
     argparse = ArgumentParser()
     argparse.add_argument("presentation", help="which presentation to parse")
-    argparse.add_argument("--javascript", help="whether to use JavaScript", default=True, type=bool)
+    argparse.add_argument(
+        "--javascript", help="whether to use JavaScript",
+        default=True, type=bool
+    )
     argparse.add_argument("target", help="the zipfile to output")
     args = argparse.parse_args()
     zipfile = getZip(args.presentation, args.javascript, " - local (so no URL) - ")
