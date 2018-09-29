@@ -47,7 +47,7 @@ def app(request):
         
         if get == "zip":
             zipfile = getZip(pres, (get!="nojs"), url=url)
-            Response(zipfile, mimetype="application/zip")
+            response = Response(zipfile, mimetype="application/zip")
         else: # assume get == "html"
             html = getHtml(pres, (get!="nojs"), url=url)
             response = Response(html, mimetype="text/html")
