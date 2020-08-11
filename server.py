@@ -17,7 +17,7 @@
 
 from os import path
 from werkzeug.serving import run_simple
-from werkzeug.wsgi import SharedDataMiddleware
+from werkzeug.middleware.shared_data import SharedDataMiddleware
 
 import main
 
