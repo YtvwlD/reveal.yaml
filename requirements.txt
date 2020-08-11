@@ -1,0 +1,6 @@
+werkzeug
+PyYAML
+markdown
+pygments
+jinja2
+# gunicorn (optional)
